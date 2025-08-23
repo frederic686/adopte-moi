@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil – Adopte-moi{% endblock %}
+
+{% block content %}
+  <section>
+    <h1>Bienvenue sur Adopte-moi 🐾</h1>
+    <p>Trouvez votre futur compagnon parmi chiens, chats, oiseaux…</p>
+    <p>
+      <a href="{{ path('app_register') }}">Créer un compte</a>
+      ou
+      <a href="{{ path('app_login') }}">Me connecter</a>
+    </p>
+  </section>
+
+  <hr>
+
+  <h2>Les annonces disponibles</h2>
+
+  {% if animaux is empty %}
+    <p>Aucune annonce n’a encore été publiée.</p>
+
+  {% else %}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;">
+      {% for animal in animaux %}
+        <div style="border:1px solid #ddd;border-radius:10px;overflow:hidden;box-shadow:0 2px 5px rgba(0,0,0,0.1);background:#fff;">
+          
+          {# ✅ Photo #}
+          {% if animal.photo %}
+            <img src="{{ animal.photo }}" alt="{{ animal.nom }}" style="width:100%;height:180px;object-fit:cover;">
+          {% else %}
+            <div style="width:100%;height:180px;display:flex;align-items:center;justify-content:center;background:#f3f4f6;color:#888;">
+              Pas de photo
+            </div>
+          {% endif %}
+
+          <div style="padding:15px;">
+            <h3 style="margin:0 0 10px;">{{ animal.nom }}</h3>
+            <p style="margin:0;font-size:14px;color:#555;">
+              <strong>Type :</strong> {{ animal.type }}<br>
+              <strong>Race :</strong> {{ animal.race }}<br>
+              <strong>Éleveur :</strong> {{ animal.eleveur.nom }}
+            </p>
+
+            <div style="margin-top:10px;">
+              <a href="{{ path('animal_public_show', { id: animal.id }) }}"
+              style="padding:6px 10px;border-radius:6px;background:#3b82f6;color:white;text-decoration:none;font-size:14px;">
+              👁️ Voir la fiche
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+{% endblock %}

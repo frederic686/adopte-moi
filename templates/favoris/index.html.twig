@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes favoris{% endblock %}
+
+{% block content %}
+  <h1>Mes favoris 🐾</h1>
+
+  {% if animaux is empty %}
+    <p>Tu n’as pas encore ajouté d’animal en favori.</p>
+  {% else %}
+    <ul>
+      {% for animal in animaux %}
+        <li>
+          <strong>{{ animal.nom }}</strong>
+          ({{ animal.type.categorie }}) – {{ animal.race }}<br>
+          <img src="{{ animal.photo ?: '/uploads/animals/default.png' }}" alt="Photo" style="width:100px">
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

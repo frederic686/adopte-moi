@@ -1,0 +1,48 @@
+{# templates/animal/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Animaux disponibles{% endblock %}
+
+{% block content %}
+  <h1>Animaux disponibles 🐾</h1>
+
+  <div class="grid">
+    {% for animal in animals %}
+      <div class="animal-card">
+        <div class="photo">
+          <img src="{{ animal.photo }}" 
+               alt="{{ animal.nom }}">
+        </div>
+
+        <div class="info">
+          <h3>{{ animal.nom }}</h3>
+          <div class="tags">
+            <span class="tag">{{ animal.type.categorie }}</span>
+            <span class="tag">{{ animal.race }}</span>
+          </div>
+
+          <div class="eleveur">
+            <img src="{{ animal.eleveur.photo ? asset('uploads/avatars/' ~ animal.eleveur.photo) : asset('uploads/avatars/default.png') }}" 
+                 alt="{{ animal.eleveur.nom }}">
+            <div>
+              <p><strong>{{ animal.eleveur.nom }}</strong></p>
+              <p class="ville">{{ animal.eleveur.ville }}</p>
+            </div>
+          </div>
+
+          <div class="actions">
+            <a href="{{ path('app_animal_show', {id: animal.id}) }}" class="btn">👁️ Voir</a>
+            {% if is_granted('ROLE_USER') and app.user != animal.eleveur %}
+              <form method="post" action="{{ path('app_demande_adoption', {id: animal.id}) }}" style="display:inline">
+                <input type="hidden" name="_token" value="{{ csrf_token('adopter' ~ animal.id) }}">
+                <button class="btn">🤝 Adopter</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p>Aucun animal pour le moment.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

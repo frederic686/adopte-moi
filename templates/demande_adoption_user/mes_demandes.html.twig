@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes demandes d’adoption{% endblock %}
+
+{% block content %}
+  <h1>Mes demandes d’adoption</h1>
+
+  {% if demandes is empty %}
+    <p>Aucune demande pour l’instant.</p>
+  {% else %}
+    {% set labels = {
+      'en_attente': 'En attente',
+      'en attente': 'En attente',
+      'En attente': 'En attente',
+      'acceptee': 'Acceptée',
+      'refusee': 'Refusée',
+      'annulee': 'Annulée'
+    } %}
+
+    <table class="table" style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th style="text-align:left">Date</th>
+          <th style="text-align:left">Photo</th>
+          <th style="text-align:left">Animal</th>
+          <th style="text-align:left">Éleveur</th>
+          <th style="text-align:left">Message</th>
+          <th style="text-align:left">Statut</th>
+          <th style="text-align:left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for d in demandes %}
+        {% set isEnAttente = d.statut in ['en_attente', 'en attente', 'En attente'] %}
+        {% set photo = d.animal.photo|default('/uploads/animals/default.png') %}
+        <tr style="border-top:1px solid #e5e7eb">
+          <td>{{ d.date ? d.date|date('Y-m-d H:i') : '' }}</td>
+
+          <td style="padding:8px;">
+            <a href="{{ path('animal_public_show', { id: d.animal.id }) }}" style="display:inline-block">
+              <img
+                src="{{ photo }}"
+                alt="{{ d.animal.nom }}"
+                style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid #e5e7eb"
+              >
+            </a>
+          </td>
+
+          <td>
+            <a href="{{ path('animal_public_show', { id: d.animal.id }) }}" style="text-decoration:none;">
+              {{ d.animal.nom }}
+            </a>
+          </td>
+
+          <td>{{ d.animal.eleveur.nom ?: d.animal.eleveur.email }}</td>
+          <td>{{ d.message }}</td>
+          <td><strong>{{ labels[d.statut]|default(d.statut) }}</strong></td>
+
+          <td>
+            {% if isEnAttente %}
+              <form method="post"
+                    action="{{ path('app_mes_demandes_cancel', { id: d.id }) }}"
+                    style="display:inline"
+                    onsubmit="return confirm('Annuler cette demande ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ d.id) }}">
+                <button class="btn btn--ghost">Annuler</button>
+              </form>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

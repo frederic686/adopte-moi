@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche – Adopte-moi{% endblock %}
+
+{% block content %}
+  <h1>Ils t’attendent !</h1>
+
+<form method="get" action="{{ path('app_recherche') }}" style="margin-bottom:20px;display:flex;gap:10px;align-items:center;">
+  <input type="search" name="q" placeholder="Rechercher par mot-clé"
+         value="{{ q }}" style="flex:1;padding:8px;border:1px solid #ccc;border-radius:6px;">
+
+  <button type="submit" name="type" value=""      style="padding:6px 12px;border-radius:20px;border:none;cursor:pointer;{{ not type ? 'background:#fda4af;color:white;' : 'background:#f3f4f6;' }}">Tous</button>
+
+  <button type="submit" name="type" value="chien" style="padding:6px 12px;border-radius:20px;border:none;cursor:pointer;{{ type == 'chien'  ? 'background:#fda4af;color:white;' : 'background:#f3f4f6;' }}">Chiens</button>
+
+  <button type="submit" name="type" value="chat"  style="padding:6px 12px;border-radius:20px;border:none;cursor:pointer;{{ type == 'chat'   ? 'background:#fda4af;color:white;' : 'background:#f3f4f6;' }}">Chats</button>
+  
+  <button type="submit" name="type" value="oiseau" style="padding:6px 12px;border-radius:20px;border:none;cursor:pointer;{{ type == 'oiseau' ? 'background:#fda4af;color:white;' : 'background:#f3f4f6;' }}">Oiseaux</button>
+
+  <button type="submit" name="type" value="lapin" style="padding:6px 12px;border-radius:20px;border:none;cursor:pointer;{{ type == 'lapin' ? 'background:#fda4af;color:white;' : 'background:#f3f4f6;' }}">lapin</button>
+</form>
+
+
+  {% if animaux is empty %}
+    <p>Aucun résultat trouvé.</p>
+  {% else %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;">
+      {% for animal in animaux %}
+        <div style="border:1px solid #ddd;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+          
+          {% if animal.photo %}
+            <img src="{{ animal.photo }}" alt="{{ animal.nom }}" style="width:100%;height:180px;object-fit:cover;">
+          {% endif %}
+
+          <div style="padding:12px;">
+            <h3>{{ animal.nom }}</h3>
+              <strong>Type :</strong> {{ animal.type }}<br>
+              <strong>Race :</strong> {{ animal.race }}<br>
+              <strong>Éleveur :</strong> {{ animal.eleveur.nom }}
+            <p style="font-size:13px;color:#666;">Éleveur : {{ animal.eleveur.nom }} ({{ animal.eleveur.ville }})</p>
+
+            <a href="{{ path('animal_public_show', {id: animal.id}) }}"
+               style="display:inline-block;margin-top:8px;padding:6px 10px;background:#3b82f6;color:white;border-radius:6px;text-decoration:none;font-size:14px;">
+              👁️ Voir la fiche
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

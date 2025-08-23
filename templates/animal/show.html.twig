@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche animal{% endblock %}
+
+{% block content %}
+  <h1>{{ animal.nom }}</h1>
+
+  <div style="display:flex; gap:20px; align-items:flex-start">
+    <div>
+      <img src="{{ animal.photo }}" 
+           alt="{{ animal.nom }}" 
+           style="width:300px;height:300px;object-fit:cover;border-radius:8px">
+    </div>
+
+    <div>
+      <p><strong>Description :</strong> {{ animal.description }}</p>
+      <p><strong>Race :</strong> {{ animal.race }}</p>
+      <p><strong>Sexe :</strong> {{ animal.sexe }}</p>
+      <p><strong>Âge :</strong> {{ animal.age }} ans</p>
+      <p><strong>Publié le :</strong> {{ animal.datePublication ? animal.datePublication|date('d/m/Y H:i') : '' }}</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <p style="margin-top:20px">
+    <a href="{{ path('app_eleveur') }}">⬅ Retour à la liste</a>
+    {% if is_granted('ROLE_ELEVEUR') and app.user == animal.eleveur %}
+      | <a href="{{ path('app_animal_edit', {'id': animal.id}) }}">✏ Modifier</a>
+      | {{ include('animal/_delete_form.html.twig') }}
+    {% endif %}
+  </p>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animaux disponibles{% endblock %}
+
+{% block content %}
+  <h1>Animaux disponibles</h1>
+
+  {% if animaux is empty %}
+    <p>Aucun animal publié pour l’instant.</p>
+  {% else %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+      {% for animal in animaux %}
+        <article style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff">
+          <a href="{{ path('animal_public_show', { id: animal.id }) }}" style="display:block">
+            <img
+              src="{{ animal.photo ?? '/uploads/animals/default.png' }}"
+              alt="{{ animal.nom }}"
+              style="width:100%;height:180px;object-fit:cover"
+            >
+          </a>
+
+          <div style="padding:12px">
+            <h3 style="margin:0 0 6px 0;">
+              <a href="{{ path('animal_public_show', { id: animal.id }) }}" style="text-decoration:none;color:#111827">
+                {{ animal.nom }}
+              </a>
+            </h3>
+            <p style="margin:0 0 4px 0;color:#374151">
+              {{ animal.type.categorie ?? 'Animal' }} – {{ animal.race }}
+            </p>
+            <p style="margin:0 0 8px 0;color:#6b7280;font-size:14px">
+              Publié le {{ animal.datePublication ? animal.datePublication|date('d/m/Y H:i') : '—' }}
+            </p>
+
+            {# Actions selon le rôle #}
+            {% if app.user %}
+              {% if is_granted('ROLE_USER') and not is_granted('ROLE_ELEVEUR') %}
+                <form action="{{ path('app_envoyer_friandise', { id: animal.id }) }}" method="post" style="margin-top:6px">
+                  <input type="hidden" name="_token" value="{{ csrf_token('friandise' ~ animal.id) }}">
+                  <button type="submit" class="btn">🍬 donner friandise</button>
+                </form>
+              {% else %}
+                <p style="margin:8px 0 0 0;font-size:14px;color:#6b7280">
+                  Actions réservées aux user.
+                </p>
+              {% endif %}
+            {% else %}
+              <p style="margin:8px 0 0 0;font-size:14px;">
+                <a href="{{ path('app_login') }}">Connectez-vous</a> pour adopter.
+              </p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

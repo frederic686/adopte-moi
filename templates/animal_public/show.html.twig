@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche animal – {{ animal.nom }}{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <h1>{{ animal.nom }}</h1>
+
+    <div style="display:flex; gap:20px; align-items:flex-start; margin-bottom:20px;">
+      <div>
+        <img src="{{ animal.photo ?? '/uploads/animals/default.png' }}"
+             alt="{{ animal.nom }}"
+             style="width:300px;height:300px;object-fit:cover;border-radius:8px">
+      </div>
+
+      <div>
+        <p><strong>Description :</strong> {{ animal.description }}</p>
+        <p><strong>Race :</strong> {{ animal.race }}</p>
+        <p><strong>Sexe :</strong> {{ animal.sexe }}</p>
+        <p><strong>Âge :</strong> {{ animal.age }} ans</p>
+        <p><strong>Publié le :</strong> {{ animal.datePublication ? animal.datePublication|date('d/m/Y H:i') : '' }}</p>
+        <p><strong>Éleveur :</strong> {{ animal.eleveur.nom }}</p>
+      </div>
+    </div>
+
+    <hr>
+
+    {# Actions selon l’état de connexion et les rôles #}
+    {% if app.user %}
+      {% if is_granted('ROLE_USER') and not is_granted('ROLE_ELEVEUR') %}
+        <p style="margin-top:10px">
+          <a class="btn" href="{{ path('app_demande_adoption_new', { id: animal.id }) }}">
+            📩 Faire une demande d’adoption
+          </a>
+        </p>
+
+        <form action="{{ path('app_envoyer_friandise', { id: animal.id }) }}" method="post" style="margin-top:10px">
+          <input type="hidden" name="_token" value="{{ csrf_token('friandise' ~ animal.id) }}">
+          <button type="submit" class="btn">🍬 donner friandise</button>
+        </form>
+      {% else %}
+        <p style="margin-top:10px;color:#6b7280">Actions réservées aux adoptants.</p>
+      {% endif %}
+    {% else %}
+      <p style="margin-top:10px;">
+        <a class="btn" href="{{ path('app_login') }}">Se connecter</a>
+        <span style="margin-left:8px;color:#6b7280">pour adopter ou donner au friandise.</span>
+      </p>
+    {% endif %}
+
+    <p style="margin-top:20px; text-align:center;">
+      <a href="{{ path('animal_public_index') }}">⬅ Retour à la liste</a>
+    </p>
+  </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publier un animal{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+
+  <div class="form-container">
+      <h1>Publier un animal 🐾</h1>
+
+      {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn">➕ Publier</button>
+      {{ form_end(form) }}
+  </div>
+
+  <p style="margin-top:20px;text-align:center;">
+    <a href="{{ path('app_eleveur') }}">⬅ Retour à mon Profil</a>
+  </p>
+{% endblock %}

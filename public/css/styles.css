@@ -1,0 +1,77 @@
+.animal-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  max-width: 320px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.animal-card .photo img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.animal-card .info {
+  padding: 12px;
+}
+
+.animal-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+
+.animal-card .tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.animal-card .tag {
+  background: #f3f4f6;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.animal-card .eleveur {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.animal-card .eleveur img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.animal-card .ville {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.animal-card .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.animal-card .btn {
+  background: #0ea5e9;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.animal-card .btn:hover {
+  background: #0284c7;
+}
