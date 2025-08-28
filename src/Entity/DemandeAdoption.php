@@ -15,8 +15,9 @@ class DemandeAdoption
     #[ORM\Column]
     private ?int $id = null;
 
+    // 🔴 Correction : une seule relation animal, avec cascade
     #[ORM\ManyToOne(inversedBy: 'demandeAdoptions')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Animal $animal = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -27,7 +28,7 @@ class DemandeAdoption
     private ?string $statut = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false)] // pas de cascade → on ne supprime pas l’utilisateur
     private ?User $utilisateur = null;
 
     #[ORM\Column]
