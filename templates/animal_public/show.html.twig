@@ -34,10 +34,23 @@
           </a>
         </p>
 
-        <form action="{{ path('app_envoyer_friandise', { id: animal.id }) }}" method="post" style="margin-top:10px">
+        {# === Formulaire friandise (MINIMUM : select + csrf + submit) === #}
+        <form action="{{ path('app_envoyer_friandise', { id: animal.id }) }}" method="post" style="margin-top:10px; display:flex; gap:8px; align-items:center;">
           <input type="hidden" name="_token" value="{{ csrf_token('friandise' ~ animal.id) }}">
-          <button type="submit" class="btn">🍬 donner friandise</button>
+
+          <label for="friandise-{{ animal.id }}" class="sr-only">Choisir une friandise</label>
+          <select id="friandise-{{ animal.id }}" name="friandise" required>
+            <option value="" disabled selected>🍬 Choisir...</option>
+            <option value="os">🦴 Os (chien)</option>
+            <option value="poisson">🐟 Poisson (chat)</option>
+            <option value="graine">🌻 Graine (oiseau)</option>
+            <option value="carotte">🥕 Carotte (lapin)</option>
+          </select>
+
+          <button type="submit" class="btn">Envoyer</button>
         </form>
+        {# ================================================ #}
+
       {% else %}
         <p style="margin-top:10px;color:#6b7280">Actions réservées aux adoptants.</p>
       {% endif %}
@@ -49,7 +62,7 @@
     {% endif %}
 
     <p style="margin-top:20px; text-align:center;">
-      <a href="{{ path('animal_public_index') }}">⬅ Retour à la liste</a>
+      <a href="{{ path('app_recherche') }}">⬅ Retour à la liste</a>
     </p>
   </div>
 {% endblock %}
