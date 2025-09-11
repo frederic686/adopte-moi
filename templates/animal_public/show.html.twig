@@ -34,7 +34,6 @@
           </a>
         </p>
 
-        {# === Formulaire friandise (MINIMUM : select + csrf + submit) === #}
         <form action="{{ path('app_envoyer_friandise', { id: animal.id }) }}" method="post" style="margin-top:10px; display:flex; gap:8px; align-items:center;">
           <input type="hidden" name="_token" value="{{ csrf_token('friandise' ~ animal.id) }}">
 
