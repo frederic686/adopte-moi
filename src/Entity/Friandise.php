@@ -13,13 +13,12 @@ class Friandise
     #[ORM\Column]
     private ?int $id = null;
 
-    // App/Entity/Friandise.php (extrait)
     #[ORM\ManyToOne(inversedBy: 'friandises')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Animal $animal = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)] // ⬅️ supprimé: onDelete: 'CASCADE'
+    #[ORM\JoinColumn(nullable: false)] 
     private ?User $envoyeur = null;
 
 

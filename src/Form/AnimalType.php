@@ -51,10 +51,6 @@ class AnimalType extends AbstractType
                 ],
             ])
 
-            // ❌ on ne laisse pas la date dans le formulaire : on la mettra automatiquement en contrôleur
-            // ->add('datePublication')
-
-            // ❌ on retire 'eleveur' : il sera défini automatiquement avec l'utilisateur connecté
 
             ->add('type', EntityType::class, [
                 'class' => Type::class,

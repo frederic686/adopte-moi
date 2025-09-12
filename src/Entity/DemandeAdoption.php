@@ -15,7 +15,6 @@ class DemandeAdoption
     #[ORM\Column]
     private ?int $id = null;
 
-    // 🔴 Correction : une seule relation animal, avec cascade
     #[ORM\ManyToOne(inversedBy: 'demandeAdoptions')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Animal $animal = null;
@@ -28,7 +27,7 @@ class DemandeAdoption
     private ?string $statut = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)] // pas de cascade → on ne supprime pas l’utilisateur
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $utilisateur = null;
 
     #[ORM\Column]
@@ -37,7 +36,7 @@ class DemandeAdoption
     public function __construct()
     {
         $this->date = new \DateTimeImmutable();
-        $this->statut = 'En attente'; // valeur par défaut
+        $this->statut = 'En attente'; 
     }
 
     public function getId(): ?int
